@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 class Node
   include Comparable
   attr_accessor :data, :left, :right
@@ -13,7 +15,7 @@ class Node
   def <=>(other)
     data.size <=> other.data.size
   end
-end
+  end
 
 class Tree
   attr_accessor :sorted_array, :root
@@ -31,6 +33,12 @@ class Tree
     root_node.left = build_tree(array[0...mid])
     root_node.right = build_tree(array[mid + 1..-1])
     root_node
+  end
+
+  def pretty_print(node = root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│ ' : ' '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 
   def insert(root_node, insert_node)
@@ -90,32 +98,45 @@ class Tree
     end
   end
 
-  def pretty_print(node = root, prefix = '', is_left = true)
-    pretty_print(node.right, "#{prefix}#{is_left ? '│ ' : ' '}", false) if node.right
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
-    pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
+  def level_order(node)
+    return nil unless node
+
+    queue = []
+    queue.push(node)
+    until queue.empty?
+      current_node = queue[0]
+      print "#{current_node.data} "
+      queue.push(current_node.left) if current_node.left
+      queue.push(current_node.right) if current_node.right
+      queue.shift
+    end
   end
 
   def pre_order(node)
-    return nil if node.nil?
+    return nil unless node
 
-    print "#{node.data}, "
+    print "#{node.data} "
     pre_order(node.left)
     pre_order(node.right)
   end
 
   def in_order(node)
-    if node
-      in_order(node.left)
-      print "#{node.data}, "
-      in_order(node.right)
-    end
+    return nil unless node
+
+    in_order(node.left)
+    print "#{node.data} "
+    in_order(node.right)
+  end
+
+  # TODO: Check if this is working correctly
+  def post_order(node)
+    return nil unless node
+
+    in_order(node.left)
+    in_order(node.right)
+    print "#{node.data} "
   end
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.pretty_print
-tree.delete(tree.root, 8)
-puts '-------------------'
-tree.pretty_print
-tree.in_order(tree.root)
