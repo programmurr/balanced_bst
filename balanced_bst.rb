@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 class Node
   include Comparable
   attr_accessor :data, :left, :right
@@ -51,7 +49,7 @@ class Tree
         root_node.right = insert_node
       end
     else
-      if root_node
+      if root_node.left
         insert(root_node.left, insert_node)
       else
         root_node.left = insert_node
@@ -98,6 +96,19 @@ class Tree
     end
   end
 
+  def height(node)
+    return -1 unless node
+
+    left_height = height(node.left)
+    right_height = height(node.right)
+
+    if left_height > right_height
+      left_height + 1
+    else
+      right_height + 1
+    end
+  end
+
   def level_order(node)
     return nil unless node
 
@@ -140,3 +151,4 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.pretty_print
+p tree.height(tree.root)
