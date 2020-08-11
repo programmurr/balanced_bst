@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 class Node
   include Comparable
   attr_accessor :data, :left, :right
@@ -139,16 +141,23 @@ class Tree
     in_order(node.right)
   end
 
-  # TODO: Check if this is working correctly
   def post_order(node)
     return nil unless node
 
-    in_order(node.left)
-    in_order(node.right)
+    post_order(node.left)
+    post_order(node.right)
     print "#{node.data} "
   end
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.pretty_print
-p tree.height(tree.root)
+puts '---'
+tree.level_order(tree.root)
+puts '---'
+tree.pre_order(tree.root)
+puts '---'
+tree.in_order(tree.root)
+puts '---'
+tree.post_order(tree.root)
+puts '---'
