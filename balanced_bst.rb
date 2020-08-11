@@ -118,3 +118,4 @@ tree.pretty_print
 tree.delete(tree.root, 8)
 puts '-------------------'
 tree.pretty_print
+tree.in_order(tree.root)
