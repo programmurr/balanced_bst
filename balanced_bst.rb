@@ -38,8 +38,17 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
+
+  def pre_order(node)
+    return nil if node.nil?
+
+    print "#{node.data}, "
+    pre_order(node.left)
+    pre_order(node.right)
+  end
 end
 
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-p tree.sorted_array
-p tree.pretty_print
+tree = Tree.new([1, 2, 3, 4, 5, 6, 7])
+
+p tree.pre_order(tree.root)
+tree.pretty_print
