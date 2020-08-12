@@ -193,14 +193,37 @@ class Tree
   end
 end
 
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.insert(tree.root, Node.new(400))
-tree.insert(tree.root, Node.new(500))
-tree.insert(tree.root, Node.new(600))
-tree.insert(tree.root, Node.new(700))
+random_numbers = Array.new(15) { rand(1..100) }
+tree = Tree.new(random_numbers)
+tree.pretty_print
+p tree.balanced?(tree.root)
+tree.level_order(tree.root)
+puts '---'
+tree.pre_order(tree.root)
+puts '---'
+tree.post_order(tree.root)
+puts '---'
+tree.in_order(tree.root)
+puts '---'
+tree.insert(tree.root, Node.new(101))
+tree.insert(tree.root, Node.new(102))
+tree.insert(tree.root, Node.new(103))
+tree.insert(tree.root, Node.new(104))
+tree.insert(tree.root, Node.new(105))
+tree.insert(tree.root, Node.new(106))
+tree.insert(tree.root, Node.new(107))
+puts '---'
 tree.pretty_print
 p tree.balanced?(tree.root)
 tree = tree.rebalance
 puts '---'
 tree.pretty_print
 p tree.balanced?(tree.root)
+tree.level_order(tree.root)
+puts '---'
+tree.pre_order(tree.root)
+puts '---'
+tree.post_order(tree.root)
+puts '---'
+tree.in_order(tree.root)
+puts '---'
