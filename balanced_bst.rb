@@ -110,10 +110,6 @@ class Tree
   end
 
   def depth(node)
-    # Write a #depth method which accepts a node and returns the depth(number of levels) beneath the node.
-    # TODO: Should this be returning the distance between the root and current node? Check solutons to make sure
-    return -1 unless node
-
     left_depth = depth(node.left)
     right_depth = depth(node.right)
 
