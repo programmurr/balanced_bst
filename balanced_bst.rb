@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 class Node
   include Comparable
   attr_accessor :data, :left, :right
@@ -15,7 +13,7 @@ class Node
   def <=>(other)
     data.size <=> other.data.size
   end
-  end
+end
 
 class Tree
   attr_accessor :sorted_array, :root
@@ -111,6 +109,51 @@ class Tree
     end
   end
 
+  def depth(node)
+    # Write a #depth method which accepts a node and returns the depth(number of levels) beneath the node.
+    # TODO: Should this be returning the distance between the root and current node? Check solutons to make sure
+    return -1 unless node
+
+    left_depth = depth(node.left)
+    right_depth = depth(node.right)
+
+    if left_depth > right_depth
+      left_depth + 1
+    else
+      right_depth + 1
+    end
+  end
+
+  def balanced?(node)
+    return nil unless node
+
+    balanced?(node.left)
+    balanced?(node.right)
+
+    (height(node.left) - height(node.right)).abs <= 1
+  end
+
+  def make_level_order_array(node)
+    return nil unless node
+
+    queue = []
+    return_array = []
+    queue.push(node)
+    until queue.empty?
+      current_node = queue[0]
+      return_array << current_node.data
+      queue.push(current_node.left) if current_node.left
+      queue.push(current_node.right) if current_node.right
+      queue.shift
+    end
+    return_array
+  end
+
+  def rebalance
+    level_order_array = make_level_order_array(root)
+    Tree.new(level_order_array.sort.uniq)
+  end
+
   def level_order(node)
     return nil unless node
 
@@ -151,13 +194,13 @@ class Tree
 end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+tree.insert(tree.root, Node.new(400))
+tree.insert(tree.root, Node.new(500))
+tree.insert(tree.root, Node.new(600))
+tree.insert(tree.root, Node.new(700))
 tree.pretty_print
+p tree.balanced?(tree.root)
+tree = tree.rebalance
 puts '---'
-tree.level_order(tree.root)
-puts '---'
-tree.pre_order(tree.root)
-puts '---'
-tree.in_order(tree.root)
-puts '---'
-tree.post_order(tree.root)
-puts '---'
+tree.pretty_print
+p tree.balanced?(tree.root)
